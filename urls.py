@@ -16,6 +16,14 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-	url('r^', ListView.as_view(queryset=Post.objects.all(), context_object_name="posts_list"), name="home"),
-	url(r'^post/(?P<slug>[a-zA-Z0-9-]+)/$', PostDetailView.as_view(queryset=Post.objects.all(), context_object_name="post"), name="post"),
+    url(r'^$', ListView.as_view(
+	queryset=Post.objects.all(), 
+	context_object_name="posts_list"), 
+	name="home"
+    ),
+    url(r'^post/(?P<slug>[a-zA-Z0-9-]+)/$', DetailView.as_view(
+	queryset=Post.objects.all(), 
+	context_object_name="post"), 
+	name="post"
+    ),
 )
