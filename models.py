@@ -4,13 +4,27 @@ from django.core.urlresolvers import reverse
 from djangotoolbox.fields import ListField, EmbeddedModelField
 
 
+POST_CHOICES = (
+	('p', 'post'),
+	('v', 'video'),
+	('i', 'image'),
+	('q', 'quote'),
+)
+
 # class Post - These are the posts.
 class Post(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 	title = models.CharField(max_length=255)
 	slug = models.SlugField()
-	body = models.TextField()
+	
 	comments = ListField(EmbeddedModelField('Comment'), editable=False)
+	
+	post_type = models.CharField(max_length=1, choices=POST_CHOICES, default='p')
+	
+	body = models.TextField(blank=True, help_text="The body of the Post / Quote")
+	embed_code = models.TextField(blank=True, help_text="The embed code for video")
+	image_url = models.TextField(blank=True, help_text="Image src")
+	author = models.CharField(blank=True, max_length=255, help_text="Author name")
 	
 	def get_absolute_url(self):
 		return reverse('post', kwargs={"slug": self.slug})
